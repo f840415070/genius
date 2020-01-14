@@ -66,8 +66,8 @@ class Manager(object):
 
     def _run_command(self):
         if self._check_spider_isalive():
-            self.log.info('无法启动爬虫，因为爬虫已在后台运行，请使用 {} manager.py -rs {} 重启爬虫。'.format(
-                self.python_env, self.name))
+            self.log.info('无法启动爬虫，因为<{}>已在后台运行，请使用 {} manager.py -rs {} 重启爬虫。'.format(
+                self.name, self.python_env, self.name))
             return
         popen('nohup {} manager.py --runspider {} >/dev/null 2>&1 &'.format(self.python_env, self.name))
         self._view_spider()
@@ -114,7 +114,7 @@ class Manager(object):
 
     def _restart_spider(self):
         self._kill_spider()
-        self.log.info('爬虫准备重启...')
+        self.log.info('<{}>准备重启...'.format(self.name))
         self._run_command()
 
     def run(self):
