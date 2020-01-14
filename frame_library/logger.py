@@ -48,7 +48,7 @@ class Logger(metaclass=Singleton):
         if self.LOG_ENABLED and self.LOG_TO_FILE:
             self.check_path()
             filename = os.path.join(self.LOG_PATH, ''.join([self.name, '.log']))
-            file_handler = TimedRotatingFileHandler(filename=filename, when='D', backupCount=3,
+            file_handler = TimedRotatingFileHandler(filename=filename, when='MIDNIGHT', backupCount=3,
                                                     interval=1, encoding='utf-8')
             file_handler.setLevel(self.LOG_LEVEL)
             formatter = logging.Formatter(self.LOG_FORMAT)
