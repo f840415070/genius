@@ -5,7 +5,7 @@
 @Description: 央视网新闻爬虫
 '''
 from core.genius import Genius
-from frame_library.common_library import timestr_to_timestamp, get_content_from_html
+from frame_library.common_library import timestr_to_timestamp, get_content_from_html, check_image
 import re
 
 
@@ -85,6 +85,8 @@ class SpiderCctvNews(Genius):
                 continue
             if 'http' not in img:
                 img = 'http:' + img
+            if not check_image(img):
+                continue
             item['images'].append(img)
         item['article_type'] = 2 if item['images'] else 1
         source = resp.xpath("//meta[@name='source']/@content")
