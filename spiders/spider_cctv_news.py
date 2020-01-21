@@ -61,21 +61,21 @@ class SpiderCctvNews(Genius):
                 yield self.seeding(url, self.parse_article, meta=item)
 
     def parse_article(self, response):
-        if '威虎堂' in response.text:
-            return self.log.info('此新闻无用，抛弃。')
-
         item = response.meta
         resp = response.etree_html
+
         if resp.xpath("//meta[@name='spm-id']"):
             content_ = get_content_from_html(resp, "//div[@class='content_area']", 'a', 'strong')
-            item['content_text'] = content_[1]
             if content_ is None:
                 return self.log.info('html未提取到内容，故放弃本次请求。')
+            item['content_text'] = content_[1]
         else:
             content_ = get_content_from_html(resp, "//div[@class='cnt_bd']", 'a', 'strong')
-            item['content_text'] = content_[1][1:]
             if content_ is None:
                 return self.log.info('html未提取到内容，故放弃本次请求。')
+            item['content_text'] = content_[1][1:]
+            if '威虎堂' in item['content_text'][-1]:
+                return self.log.info('此新闻无用，抛弃。')
 
         item['content_html'] = content_[0]
         item['images'] = []
