@@ -5,7 +5,7 @@
 @Description: 环球网新闻爬虫
 '''
 from core.genius import Genius
-from frame_library.common_library import timestamp_to_timestr, get_content_from_html
+from frame_library.common_library import timestamp_to_timestr, get_content_from_html, check_image
 import re
 
 
@@ -71,6 +71,8 @@ class HuanQiuNews(Genius):
         for img in images_:
             if 'http' not in img:
                 img = 'https:' + img
+            if not check_image(img):
+                continue
             item['images'].append(img)
         item['article_type'] = 2 if item['images'] else 1
         self.save_to_mongo(item)
