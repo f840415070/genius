@@ -73,6 +73,12 @@ def get_content_from_html(etree_obj, xpath_exp, *args):
     return content_html, text, images
 
 
+def check_image(img):
+    if any([i in img for i in ('.jpg', '.jpeg', '.png', '.JPG', '.JPEG', '.PNG')]):
+        return True
+    return False
+
+
 if __name__ == '__main__':
-    print(timestamp_to_timestr(1577930933599))
-    print(timestr_to_timestamp('2020-01-02 10:34'))
+    url = 'http://sfsjpeg.jpg'
+    print(check_image(url))
