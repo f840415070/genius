@@ -32,10 +32,7 @@ def timestr_to_timestamp(time_str):
 
 def timestamp_to_timestr(timestamp, counting='S'):
     # 时间戳转化为时间字符串
-    try:
-        timestr = time.strftime(counting_map[counting], time.localtime(timestamp))
-    except OSError:
-        timestr = time.strftime(counting_map[counting], time.localtime(timestamp / 1000))
+    timestr = time.strftime(counting_map[counting], time.localtime(timestamp))
     return timestr
 
 
@@ -80,5 +77,4 @@ def check_image(img):
 
 
 if __name__ == '__main__':
-    url = 'http://sfsjpeg.jpg'
-    print(check_image(url))
+    print(timestamp_to_timestr(1571358312683))
