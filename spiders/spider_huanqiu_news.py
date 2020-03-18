@@ -50,7 +50,7 @@ class HuanQiuNews(Genius):
                 item['title'] = each['title']
                 item['source'] = each['source']['name']
                 item['publish_timestamp'] = int(each['ctime'])
-                item['publish_timestr'] = timestamp_to_timestr(item['publish_timestamp'])
+                item['publish_timestr'] = timestamp_to_timestr(int(item['publish_timestamp']/1000))
                 item['web_source'] = '环球网'
                 item['classify'] = response.meta
                 cover = each['cover']
