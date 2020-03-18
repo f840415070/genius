@@ -52,8 +52,7 @@ class HotNews(Genius):
                     item['title'] = title[0]
                     item['source'] = '中国新闻网'
                     item['has_marked'] = 0
-                    if self.filter_item(item['url']):
-                        self.save_to_mongo(item)
+                    self.save_to_mongo(item)
 
 
 if __name__ == '__main__':
