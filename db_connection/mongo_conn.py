@@ -7,7 +7,6 @@
 from config.config_parser import get_config
 from frame_library.singleton import Singleton
 from pymongo import MongoClient
-from urllib.parse import quote_plus
 
 
 class MongoConn(metaclass=Singleton):
@@ -20,30 +19,19 @@ class MongoConn(metaclass=Singleton):
         self.db = self.config.get('MONGO', 'DB')
         self.username = self.config.get('MONGO', 'USERNAME')
         self.password = self.config.get('MONGO', 'PASSWORD')
-
-        self.uri = self.get_uri()
-        self._client = MongoClient(self.uri)
-
-    def get_uri(self):
-        if self.debug:
-            uri = 'mongodb://{}:{}/{}'.format(self.host, self.port, self.db)
-        else:
-            if not all([self.username, self.password]):
-                uri = 'mongodb://{}:{}/{}'.format(self.host, self.port, self.db)
-            else:
-                uri = 'mongodb://{}:{}@{}:{}/{}'.format(
-                    quote_plus(self.username), quote_plus(self.password), self.host, self.port, self.db
-                )
-        return uri
+        self._client = MongoClient(self.host, self.port)
+        self.db = self._client[self.db]
+        if all([self.username, self.password]):
+            self.db.authenticate(self.username, self.password)
 
     @property
-    def get_client(self):
-        return self._client
+    def get_db(self):
+        return self.db
 
 
 if __name__ == '__main__':
-    client = MongoConn()
-    print(client.uri)
-    col = client._client['TechNews']['cctv_tech']
-    r = col.find_one({'_id': 'ARTIYGnL0WqPO2ZdwKcdTjo8191119'})
+    conn = MongoConn()
+    db = conn.get_db
+    col = db['cctv_news']
+    r = col.find_one()
     print(r)
