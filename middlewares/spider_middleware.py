@@ -15,6 +15,7 @@ class SpiderMiddleware(metaclass=Singleton):
     def __init__(self):
         self.log = get_log_config()
         self.dup = Duplicater()
+        self.dupname_suffix = 'dup'
 
     def check_seed(self, seed):
         if isinstance(seed, Seed):
@@ -30,7 +31,8 @@ class SpiderMiddleware(metaclass=Singleton):
         this_seed = self.check_seed(seed)
         if this_seed:
             if this_seed.filter_item:
-                result = self.dup.duplicate(name, seed.url)
+                name_dup = ':'.join((name.split(':')[0], self.dupname_suffix))
+                result = self.dup.duplicate(name_dup, seed.url)
                 if not result:
                     return None
             return this_seed
